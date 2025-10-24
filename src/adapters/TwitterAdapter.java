@@ -1,11 +1,17 @@
 package adapters;
+import apis.TwitterAPI;
+import config.Conteudo;
+import config.Estatisticas;
+import config.GerenciadorMidiaSocial;
+import java.time.LocalDateTime;
 
 // TwitterAdapter.java
 public class TwitterAdapter implements GerenciadorMidiaSocial {
+
     private final TwitterAPI twitter;
 
     public TwitterAdapter(TwitterAPI twitter) {
-        this.twitter = twitter;
+        this.twitter = new TwitterAPI();
     }
 
     @Override

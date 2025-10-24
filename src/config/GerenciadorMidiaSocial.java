@@ -1,4 +1,6 @@
-package core;
+package config;
+
+import java.time.LocalDateTime;
 
 public interface GerenciadorMidiaSocial {
     void publicar(Conteudo conteudo);

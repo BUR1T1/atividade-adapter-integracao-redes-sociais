@@ -1,15 +1,49 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import adapters.InstagramAdapter;
+import adapters.LinkedInAdapter;
+import adapters.TikTokAdapter;
+import adapters.TwitterAdapter;
+import apis.InstagramAPI;
+import apis.LinkedInAPI;
+import apis.TikTokAPI;
+import apis.TwitterAPI;
+import config.Conteudo;
+import config.Estatisticas;
+import config.GerenciadorMidiaSocial;
+import core.RespostaMidiaSocial;
+import factory.ConteudoFactory;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Conteudo twitterConteudo = ConteudoFactory.gerarPara("twitter");
+      /*Conteudo instagramConteudo = ConteudoFactory.gerarPara("instagram");
+        Conteudo linkedinConteudo = ConteudoFactory.gerarPara("linkedin");
+        Conteudo tiktokConteudo = ConteudoFactory.gerarPara("tiktok");*/
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        GerenciadorMidiaSocial twitter = new TwitterAdapter(new TwitterAPI());
+     /* GerenciadorMidiaSocial instagram = new InstagramAdapter(new InstagramAPI());
+        GerenciadorMidiaSocial linkedin = new LinkedInAdapter(new LinkedInAPI());
+        GerenciadorMidiaSocial tiktok = new TikTokAdapter(new TikTokAPI());*/
+
+        // Publicação individual
+        twitter.publicar(twitterConteudo);
+      /*instagram.publicar(instagramConteudo);
+        linkedin.publicar(linkedinConteudo);
+        tiktok.publicar(tiktokConteudo);
+*/
+        LocalDateTime horario = LocalDateTime.now().plusHours(2);
+        twitter.agendar(twitterConteudo, horario);
+   /*   instagram.agendar(instagramConteudo, horario);
+        linkedin.agendar(linkedinConteudo, horario);
+        tiktok.agendar(tiktokConteudo, horario);*/
+
+        // Estatísticas
+        RespostaMidiaSocial middleware = new RespostaMidiaSocial();
+        for (GerenciadorMidiaSocial rede : List.of(twitter/*, instagram, linkedin, tiktok*/)) {
+            Estatisticas stats = rede.consultarEstatisticas("post123");
+            middleware.processar(stats);
         }
     }
 }
